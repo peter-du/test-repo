@@ -1,9 +1,40 @@
+"""
+Code snippets for HackerRank challenges
+"""
+
+
 # Read input from STDIN
 '''
 n = int(input())
-X = [int(x) for x in input().split(' ')]
-F = [int(x) for x in input().split(' ')]
+X = [int(x) for x in input().split()]
+Y = [int(x) for x in input().split()]
+
+
+nm = input().split()
+n = int(nm[0])
+m = int(nm[1])
+
+l = []
+
+for _ in range(n):
+    l.append(list(map(int, input().rstrip().split())))
+
+my_array = numpy.array(l)
 '''
+
+# List comprehension + numpy array for matrix multiplication
+'''
+import numpy
+
+n = int(input())
+
+A = numpy.array([list(map(int, input().rstrip().split())) for _ in range(n)])
+B = numpy.transpose(numpy.array([list(map(int, input().rstrip().split())) for _ in range(n)]))
+
+print(numpy.array([[numpy.dot(A[i], B[j]) for j in range(n)] for i in range(n)]))
+'''
+
+
 
 
 # Interquartile range
@@ -414,7 +445,7 @@ if __name__ == '__main__':
 
 
 # Special Multiple
-
+'''
 def toBinaryList(k):
     res = [int(x) for x in bin(k)[2:]]
     res.reverse()
@@ -447,3 +478,145 @@ def solve(n):
 
 ans = solve(463)
 print('\nAnswer: ', ans)
+'''
+
+
+# Bus Station
+'''
+from functools import reduce
+
+
+def factors(n):
+    return set(reduce(list.__add__,
+                ([i, n//i] for i in range(1, int(n**0.5) + 1) if n % i == 0)))
+
+
+# Complete the solve function below.
+def solve(a):
+    n = len(a)
+    m = max(a)
+    s = sum(a)
+    facs = factors(s)
+    facs_to_check = sorted(list(filter(lambda x: x >= m and x < s, facs)))
+    res = []
+    for f in facs_to_check:
+        i = 0
+        good_fac = True
+        while i < n:
+            tot = 0
+            for j in range(f):
+                tot += a[i+j]
+                if tot == f:
+                    i += (j+1)
+                    break
+                elif tot > f:
+                    good_fac = False
+                    break
+            if not good_fac:
+                break
+
+        if good_fac:
+            res.append(f)
+
+    res.append(s)
+
+    return res
+
+
+# a = list(map(int, '2 2 1 1 1 1 1 2 1 2'.split()))
+a = list(map(int, '1 2 1 1 1 2 1 3'.split()))
+print(solve(a))
+'''
+
+'''
+def is_leap(year):
+    leap = False
+
+    if year % 4 == 0:
+        leap = True
+        if year % 100 == 0:
+            if year % 400 == 0:
+                leap = True
+            else:
+                leap = False
+
+    return leap
+
+
+print(is_leap(2100))
+'''
+
+
+# Primitive Problem
+'''
+def primitive(p):
+
+    smallest_pr = 0
+    num_pr = 0
+    found_smallest_pr = False
+    for g in range(2, p-1):
+        prod = g
+        is_pr = True
+        for _ in range(p - 3):
+            prod = prod * g % p
+            if prod == 1:
+                is_pr = False
+                break
+
+        if is_pr:
+            print(g)
+            num_pr += 1
+            if not found_smallest_pr:
+                smallest_pr = g
+                found_smallest_pr = True
+        else:
+            continue
+
+    print(smallest_pr, num_pr)
+
+
+primitive(443)
+'''
+
+
+def linear_interpolate(n, x_knots, y_knots, x_input):
+    # Store the set of points as a list of (x, y) tuples
+    points = [(x_knots[i], y_knots[i]) for i in range(n)]
+
+    # By default, Python's list sort() method will sort by ascending x values and ascending y values
+    points.sort()
+
+    # We need to find out where x_input lies on our line - then just calculate the line & evaluate it at x_input
+    if x_input < points[1][0]:
+        p1 = points[0]
+        p2 = points[1]
+    elif x_input > points[n - 2][0]:
+        p1 = points[n - 2]
+        p2 = points[n - 1]
+    else:
+        for i in range(1, n - 1):
+            if x_input >= points[i][0] and x_input <= points[i + 1][0]:
+                p1 = points[i]
+                p2 = points[i + 1]
+                break
+
+    print('p1: ', p1)
+    print('p2: ', p2)
+
+    # Edge case: x_input = x_p1 and x_input = x_p2
+    if x_input == p1[0] and x_input == p2[0]:
+        return p1[1]
+    # If the line is not vertical, figure out its equation in slope-intercept form
+    else:
+        m = (p2[1] - p1[1]) / (p2[0] - p1[0])
+        b = p1[1] - m * p1[0]
+        print(m, b)
+        return m * x_input + b
+
+n = 6
+x_knots = [-1.0, -1.0, 0.0, 1.0, 2.0, -2.0]
+y_knots = [12.0, 10.0, 15.0, 0.0, 5.0, 0.0]
+x_input = -0.5
+
+res = linear_interpolate(n, x_knots, y_knots, x_input)
+print(res)

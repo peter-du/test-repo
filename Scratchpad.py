@@ -200,3 +200,61 @@ while True:
         continue
 
     print("Place id", js['results'][0]['place_id'])
+
+
+
+'''
+def minimumMoves(a, m):
+    numMoves = 0
+    n = len(a)
+    for i in range(n):
+        ai = list(map(int, str(a[i])))
+        mi = list(map(int, str(m[i])))
+        k = len(ai)
+        numMoves += sum([abs(ai[j] - mi[j]) for j in range(k)])
+
+    return numMoves
+
+
+a = [1234, 4321]
+m = [2345, 3214]
+
+ans = minimumMoves(a, m)
+
+print(ans)
+'''
+
+'''
+def connectedCities(n, g, originCities, destinationCities):
+    q = len(originCities)
+    if g == 0:
+        return [1] * q
+
+    m = []
+    for j in range(g+1, n//2 + 1):
+        m += [j*k for k in range(1, n//j + 1)]
+
+    clique = set(m)
+    print('Clique: ', clique)
+
+    res = []
+    for i in range(q):
+        o = originCities[i]
+        d = destinationCities[i]
+        if o not in clique or d not in clique:
+            res.append(0)
+        else:
+            res.append(1)
+
+    return res
+'''
+
+
+'''
+def collect_max(mat):
+    # Write your code here  
+    n = len(mat)
+    # Check off-diagonal of -1's for no path
+    noPath = False
+    for i in range(n):
+'''
